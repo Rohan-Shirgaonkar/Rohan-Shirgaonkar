@@ -1,34 +1,60 @@
-# Hi, I'm Rohan
+<div align="center">
 
-I'm a software engineering student interested in Artificial Intelligence, Machine Learning, and Data Science.
+# Rohan Shirgaonkar
 
-I'm focused on building strong programming fundamentals, improving my problem-solving skills, and learning to turn ideas into working software.
+**Software Engineering Student · AI & Machine Learning · Data Science**
 
-## Currently Learning
+Building strong foundations in programming, problem-solving, and software development.
 
-- C and C++
-- Python
-- Data Structures and Algorithms
-- SQL and database fundamentals
-- Software development and AI/ML concepts
+[GitHub](https://github.com/Rohan-Shirgaonkar) · [DSA Practice](https://github.com/Rohan-Shirgaonkar/neetcode-submissions)
 
-## What I'm Working On
-
-- Practising DSA and keeping my solutions in [NeetCode Submissions](https://github.com/Rohan-Shirgaonkar/neetcode-submissions)
-- Building small projects to improve my programming and development skills
-- Strengthening my foundations in software engineering, with an interest in AI and Data Science
-
-## Areas of Interest
-
-- Software Engineering
-- Artificial Intelligence and Machine Learning
-- Data Science
-- Problem Solving
-
-## Connect
-
-- GitHub: [Rohan-Shirgaonkar](https://github.com/Rohan-Shirgaonkar)
+</div>
 
 ---
 
-*Learning step by step and improving through practice and projects.*
+## About
+
+I’m a software engineering student interested in how software is designed, built, and improved. My current priority is to strengthen core computer science fundamentals while exploring Artificial Intelligence, Machine Learning, and Data Science.
+
+I believe in learning by understanding the fundamentals, practising consistently, and turning that knowledge into working projects.
+
+## Current Focus
+
+| Area | What I’m building |
+|---|---|
+| **Programming** | C, C++, and Python fundamentals |
+| **Problem Solving** | Data Structures and Algorithms |
+| **Databases** | SQL and database fundamentals |
+| **Development** | Small, practical projects and software-building skills |
+| **AI & Data** | Foundations of AI, Machine Learning, and Data Science |
+
+## Technologies
+
+<p>
+  <img src="https://img.shields.io/badge/C-222B36?style=flat&logo=c&logoColor=A8C7E7" alt="C" />
+  <img src="https://img.shields.io/badge/C++-222B36?style=flat&logo=cplusplus&logoColor=A8C7E7" alt="C++" />
+  <img src="https://img.shields.io/badge/Python-222B36?style=flat&logo=python&logoColor=A8C7E7" alt="Python" />
+  <img src="https://img.shields.io/badge/SQL-222B36?style=flat&logo=mysql&logoColor=A8C7E7" alt="SQL" />
+  <img src="https://img.shields.io/badge/Git-222B36?style=flat&logo=git&logoColor=A8C7E7" alt="Git" />
+  <img src="https://img.shields.io/badge/GitHub-222B36?style=flat&logo=github&logoColor=A8C7E7" alt="GitHub" />
+</p>
+
+## Selected Work
+
+**[NeetCode Submissions](https://github.com/Rohan-Shirgaonkar/neetcode-submissions)**  
+A collection of my Data Structures and Algorithms practice solutions.
+
+I’m also working towards building small projects that apply what I learn. More will be added here as they become ready.
+
+## Areas of Interest
+
+- Software Engineering and problem-solving
+- Artificial Intelligence and Machine Learning
+- Data Science
+- Building useful, well-structured software
+
+---
+
+<div align="center">
+  <sub>Learning with purpose. Building through practice. Improving one step at a time.</sub>
+</div>
