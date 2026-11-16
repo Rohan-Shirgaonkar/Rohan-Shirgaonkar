@@ -7,11 +7,13 @@
 
   const menuToggle = document.querySelector(".menu-toggle");
   const primaryNav = document.querySelector(".primary-nav");
-  const closeMenu = () => {
+  const closeMenu = ({ restoreFocus = false } = {}) => {
     if (!menuToggle || !primaryNav) return;
+    const wasOpen = menuToggle.getAttribute("aria-expanded") === "true";
     menuToggle.setAttribute("aria-expanded", "false");
     menuToggle.setAttribute("aria-label", "Open navigation");
     primaryNav.classList.remove("is-open");
+    if (restoreFocus && wasOpen) menuToggle.focus();
   };
   menuToggle?.addEventListener("click", () => {
     const open = menuToggle.getAttribute("aria-expanded") !== "true";
@@ -21,7 +23,9 @@
   });
   primaryNav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMenu();
+    if (event.key === "Escape" && menuToggle?.getAttribute("aria-expanded") === "true") {
+      closeMenu({ restoreFocus: true });
+    }
   });
 
   const interests = {
@@ -69,6 +73,7 @@
 
   if (contactLinks) {
     profileItems.forEach(([key, label, value]) => {
+      if (key === "resume" && !validProfile(key, value)) return;
       const row = document.createElement(validProfile(key, value) ? "a" : "div");
       row.className = validProfile(key, value) ? "configured-link" : "missing-link";
       row.innerHTML = `<span>${label}</span><span>${validProfile(key, value) ? "↗" : "ADD DETAILS"}</span>`;
@@ -105,7 +110,7 @@
   setProjectLink("studentMarksAnalyzer", document.querySelector(".project-marks"));
   setProjectLink("neetcodeSubmissions", document.querySelector(".project-dsa"));
 
-  const revealTargets = document.querySelectorAll(".section:not(.hero) .section-heading, .about-grid > *, .interest-map, .interest-detail, .skill-group, .project-card, .perspective-art, .perspective-copy > *, .direction-item, .education-card, .contact-main > *");
+  const revealTargets = document.querySelectorAll(".section:not(.hero) .section-heading, .section-intro-row > *, .about-grid > *, .interest-map, .interest-detail, .skill-group, .project-card, .project-body > .project-title-row, .project-body > h3, .project-body > p, .project-facts > div, .project-body > .tech-row, .project-body > .project-footer, .perspective-art, .perspective-copy > *, .direction-item, .education-card, .contact-main > *, .learning-line");
   if ("IntersectionObserver" in window && !reducedMotion) {
     const observer = new IntersectionObserver((entries, currentObserver) => {
       entries.forEach((entry) => {
@@ -145,7 +150,11 @@
         }
       }
       element.classList.add("js-reveal");
-      if (element.matches(".skill-group, .project-card, .direction-item")) element.style.transitionDelay = `${Math.min(index % 4, 3) * 65}ms`;
+      if (element.matches(".skill-group, .project-card, .project-body > .project-title-row, .project-body > h3, .project-body > p, .project-facts > div, .project-body > .tech-row, .project-body > .project-footer, .direction-item, .section-intro-row > *, .about-grid > *, .contact-main > *")) {
+        const siblings = [...element.parentElement.children].filter((sibling) => sibling.matches(".js-reveal"));
+        const siblingIndex = siblings.indexOf(element);
+        element.style.transitionDelay = `${Math.min(Math.max(siblingIndex, 0), 3) * 85}ms`;
+      }
       observer.observe(element);
     });
   }
@@ -163,6 +172,9 @@
         const headerBottom = stickyHeader?.getBoundingClientRect().bottom || 0;
         const progress = Math.max(0, Math.min(1, (headerBottom - bounds.top) / Math.max(1, bounds.height)));
         heroPortrait.style.setProperty("--photo-opacity", (1 - progress).toFixed(3));
+        const shift = Math.max(-14, Math.min(26, (headerBottom - bounds.top) * .045));
+        heroPortrait.style.setProperty("--photo-shift", `${shift.toFixed(1)}px`);
+        heroPortrait.parentElement?.style.setProperty("--photo-shift", `${shift.toFixed(1)}px`);
         portraitFrame = 0;
       });
     };
@@ -178,6 +190,8 @@
       let particles = [];
       let frame = 0;
       let lastFrame = 0;
+      let heroIsVisible = true;
+      let pageIsActive = true;
       const amount = smallScreen ? 25 : 48;
       const resize = () => {
         const rect = canvas.getBoundingClientRect();
@@ -196,6 +210,8 @@
         }));
       };
       const draw = (time) => {
+        frame = 0;
+        if (!heroIsVisible || !pageIsActive || document.hidden) return;
         frame = window.requestAnimationFrame(draw);
         if (time - lastFrame < 38) return;
         lastFrame = time;
@@ -223,12 +239,37 @@
           }
         }
       };
+      const start = () => {
+        if (frame || !heroIsVisible || !pageIsActive || document.hidden) return;
+        lastFrame = 0;
+        frame = window.requestAnimationFrame(draw);
+      };
+      const stop = () => {
+        if (frame) window.cancelAnimationFrame(frame);
+        frame = 0;
+        lastFrame = 0;
+      };
+      const onVisibilityChange = () => document.hidden ? stop() : start();
+      const hero = document.querySelector(".hero");
+      const heroObserver = "IntersectionObserver" in window && hero
+        ? new IntersectionObserver(([entry]) => {
+          heroIsVisible = entry.isIntersecting;
+          if (heroIsVisible) start();
+          else stop();
+        }, { threshold: 0.01 })
+        : null;
       resize();
       window.addEventListener("resize", resize, { passive: true });
-      frame = window.requestAnimationFrame(draw);
-      document.addEventListener("visibilitychange", () => {
-        if (document.hidden) window.cancelAnimationFrame(frame);
-        else if (!document.hidden) frame = window.requestAnimationFrame(draw);
+      document.addEventListener("visibilitychange", onVisibilityChange);
+      heroObserver?.observe(hero);
+      start();
+      window.addEventListener("pagehide", () => {
+        pageIsActive = false;
+        stop();
+      });
+      window.addEventListener("pageshow", () => {
+        pageIsActive = true;
+        start();
       });
     }
   }
